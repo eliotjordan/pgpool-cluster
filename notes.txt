@@ -1,0 +1,17 @@
+# Cluster instructions
+
+
+docker run -itd --name pg1 -p 9003:5432 test/postgres
+docker run -itd --name pg2 -p 9004:5432 test/postgres
+docker run -itd --name pgpool_app --link pg1:pg1 --link pg2:pg2  -p 9005:80 -p 9006:9999 pgpool # prob dont use link ## can regenerate links?
+
+
+
+# Directions for replicating postgres containers ## This doesn't work!
+# Maybe use data volumes? 
+docker pause pg2
+docker commit -m "posgres db" pg2 pgdata
+docker run -itd --name pg1 -p 9003:5432 pgdata
+
+# Postgres docker comes from:
+https://docs.docker.com/examples/postgresql_service/
